@@ -23,7 +23,6 @@ const AddTodoModal = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     const randomString = (Math.random() + 1).toString(36).substring(7);
-    console.log(randomString);
     dispatch(addTodo({ task, description, id: randomString }));
   };
 
