@@ -28,6 +28,13 @@ const todoSlice = createSlice({
             const todo = state.todos.find((todo) => todo.id === action.payload);
             if (todo) {
                 todo.isCompleted = !todo.isCompleted;
+
+                // Separate completed and pending tasks
+                const completedTasks = state.todos.filter((task) => task.isCompleted);
+                const pendingTasks = state.todos.filter((task) => !task.isCompleted);
+
+                // Combine pending and completed tasks with completed tasks at the end
+                state.todos = [...pendingTasks, ...completedTasks];
             }
         }
     }
