@@ -6,7 +6,7 @@ type TTodoCardProps = {
   id: string;
   task: string;
   description: string;
-  isCompleted: boolean;
+  isCompleted?: boolean;
 };
 
 const TodoCard = ({ task, description, id, isCompleted }: TTodoCardProps) => {
