@@ -13,7 +13,7 @@ const TodoContainer = () => {
   // if (isLoading || isError) {
   //   return <div>Loading...</div>;
   // }
-
+  
   return (
     <div className="bg-primary-gradient rounded-lg p-2 m-2 mt-6">
       <div className="flex justify-between my-2">
