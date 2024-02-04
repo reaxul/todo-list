@@ -14,12 +14,21 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { useAppDispatch } from "@/redux/hooks";
 import { addTodo } from "@/redux/features/todoSlice";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const AddTodoModal = () => {
   const [task, setTask] = useState("");
   const [description, setDescription] = useState("");
+  const [priority, setPriority] = useState("");
   const dispatch = useAppDispatch();
-
+console.log(priority);
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     const randomString = (Math.random() + 1).toString(36).substring(7);
@@ -38,14 +47,12 @@ const AddTodoModal = () => {
           <DialogHeader>
             <DialogTitle>Add task</DialogTitle>
             <DialogDescription>
-              Add your task here. Click save when you're done.
+              Add your task here. Click 'save changes' when you're done.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right">
-                Task
-              </Label>
+              <Label className="text-right">Task</Label>
               <Input
                 onChange={(e) => setTask(e.target.value)}
                 id="name"
@@ -53,9 +60,22 @@ const AddTodoModal = () => {
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="username" className="text-right">
-                Description
-              </Label>
+              <Label className="text-right">Priority</Label>
+              <Select onValueChange={(value)=>setPriority(value)}>
+                <SelectTrigger className="col-span-3">
+                  <SelectValue placeholder="Select priority" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="high">High</SelectItem>
+                    <SelectItem value="medium">Medium</SelectItem>
+                    <SelectItem value="low">Low</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label className="text-right">Description</Label>
               <Input
                 onChange={(e) => setDescription(e.target.value)}
                 id="username"
