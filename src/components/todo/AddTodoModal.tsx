@@ -12,8 +12,6 @@ import {
 } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { useAppDispatch } from "@/redux/hooks";
-import { addTodo } from "@/redux/features/todoSlice";
 import {
   Select,
   SelectContent,
@@ -22,17 +20,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useAddTodoMutation } from "@/redux/api/api";
 
 const AddTodoModal = () => {
   const [task, setTask] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("");
-  const dispatch = useAppDispatch();
-console.log(priority);
+  const [addTodo] = useAddTodoMutation();
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    const randomString = (Math.random() + 1).toString(36).substring(7);
-    dispatch(addTodo({ task, description, id: randomString }));
+
+    const taskDetails = {
+      task,
+      description,
+      priority,
+      isCompleted: false,
+    };
+    console.log(taskDetails);
+
+  addTodo(taskDetails)
   };
 
   return (
@@ -61,7 +68,7 @@ console.log(priority);
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label className="text-right">Priority</Label>
-              <Select onValueChange={(value)=>setPriority(value)}>
+              <Select onValueChange={(value) => setPriority(value)}>
                 <SelectTrigger className="col-span-3">
                   <SelectValue placeholder="Select priority" />
                 </SelectTrigger>

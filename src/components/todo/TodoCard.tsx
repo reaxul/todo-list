@@ -3,16 +3,17 @@ import { Button } from "../ui/button";
 import { removeTodo, toggleState } from "@/redux/features/todoSlice";
 
 type TTodoCardProps = {
-  id: string;
+  _id: string;
   task: string;
   description: string;
+  priority: string;
   isCompleted?: boolean;
 };
 
-const TodoCard = ({ task, description, id, isCompleted }: TTodoCardProps) => {
+const TodoCard = ({ task, description, _id, isCompleted }: TTodoCardProps) => {
   const dispatch = useAppDispatch();
   const handleState = () => {
-    dispatch(toggleState(id));
+    dispatch(toggleState(_id));
   };
 
   return (
@@ -50,7 +51,7 @@ const TodoCard = ({ task, description, id, isCompleted }: TTodoCardProps) => {
             ></path>
           </svg>
         </Button>
-        <Button onClick={() => dispatch(removeTodo(id))} className="bg-red-600">
+        <Button onClick={() => dispatch(removeTodo(_id))} className="bg-red-600">
           <svg
             className="size-5"
             data-slot="icon"
