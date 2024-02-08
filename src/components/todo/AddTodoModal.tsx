@@ -25,7 +25,7 @@ import { useAddTodoMutation } from "@/redux/api/api";
 const AddTodoModal = () => {
   const [task, setTask] = useState("");
   const [description, setDescription] = useState("");
-  const [priority, setPriority] = useState("");
+  const [priority, setPriority] = useState("high");
   const [addTodo] = useAddTodoMutation();
 
   const handleSubmit = (e: FormEvent) => {
@@ -37,9 +37,8 @@ const AddTodoModal = () => {
       priority,
       isCompleted: false,
     };
-    console.log(taskDetails);
 
-  addTodo(taskDetails)
+    addTodo(taskDetails);
   };
 
   return (

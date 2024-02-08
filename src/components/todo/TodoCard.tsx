@@ -1,8 +1,7 @@
-import { useAppDispatch } from "@/redux/hooks";
 import { Button } from "../ui/button";
-import { removeTodo, toggleState } from "@/redux/features/todoSlice";
+import { useDeleteTodoMutation, useToggleStateMutation } from "@/redux/api/api";
 
-type TTodoCardProps = {
+export type TTodoCardProps = {
   _id: string;
   task: string;
   description: string;
@@ -10,30 +9,65 @@ type TTodoCardProps = {
   isCompleted?: boolean;
 };
 
-const TodoCard = ({ task, description, _id, isCompleted }: TTodoCardProps) => {
-  const dispatch = useAppDispatch();
+const TodoCard = ({
+  _id,
+  task,
+  priority,
+  description,
+  isCompleted,
+}: TTodoCardProps) => {
+  const [toggleState] = useToggleStateMutation();
+
   const handleState = () => {
-    dispatch(toggleState(_id));
+    const data = {
+      _id,
+      updatedTask: {
+        task,
+        description,
+        priority,
+        isCompleted: !isCompleted,
+      },
+    };
+
+    toggleState(data);
   };
 
+  const [deleteTodo] = useDeleteTodoMutation();
+
   return (
-    <div className="flex justify-between items-center p-2 bg-white rounded">
-      <input
-        onChange={handleState}
-        title="state"
-        type="checkbox"
-        name=""
-        id=""
-      />
-      <p className="font-semibold">{task}</p>
-      {isCompleted ? (
-        <p className="font-semibold text-green-500">Completed</p>
-      ) : (
-        <p className="font-semibold text-red-500">Pending</p>
-      )}
-      <p>{description}</p>
-      <div className="space-x-2">
-        <Button className="bg-[#7e53fe]">
+    <div className="flex flex-col p-2 bg-white rounded">
+      <div className="flex justify-between items-center">
+        <input
+          checked={isCompleted}
+          onChange={handleState}
+          title="state"
+          type="checkbox"
+          className="mr-2 h-5 w-5 border-2 border-gray-300 rounded cursor-pointer hover:ring-2 hover:ring-offset-2 hover:ring-offset-white hover:ring-indigo-500"
+        />
+        <p className="flex-grow font-semibold">
+          {task}{" "}
+          <small
+            className={`${
+              priority === "high"
+                ? "text-red-500"
+                : priority === "medium"
+                ? "text-yellow-500"
+                : "text-green-500"
+            }`}
+          >
+            ({priority})
+          </small>
+        </p>
+
+        {isCompleted ? (
+          <p className="font-semibold text-green-500">Completed</p>
+        ) : (
+          <p className="font-semibold text-red-500">Pending</p>
+        )}
+      </div>
+      <p className="text-gray-600">{description}</p>
+      <div className="mt-2 flex justify-end">
+        <Button className="bg-[#7e53fe] mr-2">
           <svg
             className="size-5"
             data-slot="icon"
@@ -51,7 +85,7 @@ const TodoCard = ({ task, description, _id, isCompleted }: TTodoCardProps) => {
             ></path>
           </svg>
         </Button>
-        <Button onClick={() => dispatch(removeTodo(_id))} className="bg-red-600">
+        <Button onClick={() => deleteTodo(_id)} className="bg-red-600">
           <svg
             className="size-5"
             data-slot="icon"
