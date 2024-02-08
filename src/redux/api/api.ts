@@ -26,6 +26,17 @@ export const baseApi = createApi({
             },
             invalidatesTags: ['Todo'],
         }),
+        updateTodo: builder.mutation({
+            query: (data) => {
+                console.log("from api=>",data);
+                return {
+                    url: `/todo/${data._id}`,
+                    method: 'PUT',
+                    body: data.updatedData,
+                }
+            },
+            invalidatesTags: ['Todo'],
+        }),
         toggleState: builder.mutation({
             query: (data) => {
                 return {
@@ -48,4 +59,4 @@ export const baseApi = createApi({
     }),
 })
 
-export const { useGetTodoQuery, useAddTodoMutation, useToggleStateMutation, useDeleteTodoMutation } = baseApi;
+export const { useGetTodoQuery, useAddTodoMutation, useUpdateTodoMutation, useToggleStateMutation, useDeleteTodoMutation } = baseApi;
